@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CITIZENS ARCHIVE — Intelligence Workspace</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside id="sidebar" class="sidebar">
+    <div class="brand"><span class="pulse"></span><div><strong>CITIZENS</strong><small>ARCHIVE</small></div></div>
+    <nav>
+      <button class="nav-btn active" data-view="dashboard"><span>◉</span> Dashboard</button>
+      <button class="nav-btn" data-view="cases"><span>▤</span> Case Archives</button>
+      <button class="nav-btn" data-view="workspace"><span>▦</span> Workspace</button>
+      <button class="nav-btn" data-view="graph"><span>⌬</span> Knowledge Graph</button>
+      <button class="nav-btn" data-view="sources"><span>⌗</span> Source Archive</button>
+      <button class="nav-btn" data-view="timeline"><span>◷</span> Timeline</button>
+      <button class="nav-btn" data-view="export"><span>↧</span> Export Center</button>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="status-row"><span class="dot"></span> LOCAL STORAGE</div>
+      <button id="collapseSidebar">Collapse</button>
+    </div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <button id="mobileMenu" class="icon-btn">☰</button>
+      <div class="search-wrap"><input id="globalSearch" placeholder="Search local cases, cards, notes, and sources…"><div id="searchResults" class="search-results hidden"></div></div>
+      <div class="topbar-right">
+        <select id="caseSelector"></select>
+        <button id="notificationsBtn" class="icon-btn" title="Activity">◔<span id="notifCount" class="badge">0</span></button>
+        <div class="workspace-status"><span class="dot"></span><span id="workspaceStatus">READY</span></div>
+      </div>
+    </header>
+    <section id="view-dashboard" class="view active">
+      <div class="page-head"><div><h1>Operations Dashboard</h1><p>Local research overview for the selected case.</p></div><button class="btn primary" data-action="new-case">+ New Case</button></div>
+      <div class="stats">
+        <div class="stat"><small>TOTAL CASES</small><strong id="statCases">0</strong></div>
+        <div class="stat"><small>SAVED RECORDS</small><strong id="statRecords">0</strong></div>
+        <div class="stat"><small>SOURCES COLLECTED</small><strong id="statSources">0</strong></div>
+        <div class="stat"><small>TIMELINE EVENTS</small><strong id="statEvents">0</strong></div>
+      </div>
+      <div class="grid-2">
+        <div class="panel"><div class="panel-head"><h2>Recent Activity</h2></div><div id="activityList" class="activity"></div></div>
+        <div class="panel"><div class="panel-head"><h2>Quick Access</h2></div><div class="quick-tools">
+          <button data-action="new-card">New Information Card</button>
+          <button data-action="new-source">Add Public Source</button>
+          <button data-action="new-event">Add Timeline Event</button>
+          <button data-action="export-json">Export JSON</button>
+          <button data-action="import-json">Import JSON</button>
+          <button data-action="print-report">Print Report</button>
+        </div></div>
+      </div>
+    </section>
+    <section id="view-cases" class="view">
+      <div class="page-head"><div><h1>Case Archives</h1><p>Create, organize, and manage authorized research cases.</p></div><button class="btn primary" data-action="new-case">+ New Case</button></div>
+      <div id="caseList" class="case-list"></div>
+    </section>
+    <section id="view-workspace" class="view">
+      <div class="page-head"><div><h1>Information Workspace</h1><p>Drag, resize, connect, and inspect case records.</p></div><div class="head-actions"><select id="cardType"><option value="note">Note</option><option value="source">Public Source</option><option value="organization">Organization</option><option value="username">Username</option><option value="timeline">Timeline</option></select><button class="btn primary" data-action="new-card">+ Card</button></div></div>
+      <div id="canvas" class="canvas"></div>
+    </section>
+    <section id="view-graph" class="view">
+      <div class="page-head"><div><h1>Knowledge Graph</h1><p>Drag nodes, create relationships, zoom, and inspect entities.</p></div><div class="head-actions"><button class="btn" data-action="add-node">+ Node</button><button class="btn danger" data-action="clear-links">Clear Links</button></div></div>
+      <div class="graph-shell"><svg id="graphSvg"></svg><div id="graphNodes"></div><div class="graph-controls"><button data-zoom="in">+</button><button data-zoom="out">−</button><button data-zoom="reset">Reset</button></div></div>
+    </section>
+    <section id="view-sources" class="view">
+      <div class="page-head"><div><h1>Source Archive</h1><p>Store publicly accessible links with attribution and verification status.</p></div><button class="btn primary" data-action="new-source">+ Add Source</button></div>
+      <div class="filters"><input id="sourceFilter" placeholder="Filter sources…"><select id="sourceStatus"><option value="">All verification</option><option value="verified">Verified</option><option value="unverified">Unverified</option></select></div>
+      <div id="sourceList" class="record-list"></div>
+    </section>
+    <section id="view-timeline" class="view">
+      <div class="page-head"><div><h1>Timeline</h1><p>Chronological, editable investigation events.</p></div><button class="btn primary" data-action="new-event">+ Event</button></div>
+      <div id="timelineList" class="timeline"></div>
+    </section>
+    <section id="view-export" class="view">
+      <div class="page-head"><div><h1>Export Center</h1><p>Export or import your local archive. No data leaves this browser.</p></div></div>
+      <div class="export-grid">
+        <button class="export-card" data-action="export-json"><strong>JSON Archive</strong><span>Full structured backup and import format</span></button>
+        <button class="export-card" data-action="export-csv"><strong>CSV Records</strong><span>Cards, sources, and timeline events</span></button>
+        <button class="export-card" data-action="export-txt"><strong>TXT Report</strong><span>Plain-text investigation summary</span></button>
+        <button class="export-card" data-action="export-html"><strong>HTML Report</strong><span>Printable case report</span></button>
+        <button class="export-card" data-action="import-json"><strong>Import JSON</strong><span>Restore a previously exported archive</span></button>
+        <button class="export-card" data-action="print-report"><strong>Print Report</strong><span>Open the browser print dialog</span></button>
+      </div>
+    </section>
+  </main>
+  <aside id="detailsPanel" class="details">
+    <div class="details-head"><h2 id="detailsTitle">Record Details</h2><button id="closeDetails" class="icon-btn">×</button></div>
+    <div id="detailsBody" class="details-body"><p class="muted">Select a case record, card, source, timeline event, or graph node.</p></div>
+  </aside>
+</div>
+<div id="modal" class="modal hidden"><div class="modal-box"><div class="modal-head"><h3 id="modalTitle">Edit</h3><button id="modalClose" class="icon-btn">×</button></div><div id="modalBody"></div><div class="modal-actions"><button class="btn" id="modalCancel">Cancel</button><button class="btn primary" id="modalSave">Save</button></div></div></div>
+<input id="fileInput" type="file" accept="application/json" class="hidden">
+<script src="app.js"></script>
+</body>
+</html>
